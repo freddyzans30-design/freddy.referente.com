@@ -671,6 +671,247 @@
         <span id="toast-message" class="text-xs font-bold uppercase tracking-wider">Cambios guardados con éxito</span>
     </div>
 
+    <!-- MODAL DE AUTENTICACIÓN / CONTRASEÑA ADMIN -->
+    <div id="modal-auth" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl border border-beige-300 p-6 sm:p-8">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 rounded-full bg-ruby-800 text-white mx-auto flex items-center justify-center text-2xl mb-3 shadow-md">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h3 class="font-serif-luxury font-bold text-2xl text-gray-900">Acceso Administrativo</h3>
+                <p class="text-xs text-gray-500 mt-1">Ingrese la clave de seguridad para gestionar el sitio y publicaciones.</p>
+            </div>
+
+            <form onsubmit="verifyAdminPassword(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Contraseña de Administrador</label>
+                    <input type="password" id="auth-password" required placeholder="••••••••" class="w-full bg-beige-50 border border-beige-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-ruby-800">
+                    <p id="auth-error" class="hidden text-xs text-rose-600 mt-1 font-semibold">
+                        <i class="fa-solid fa-circle-exclamation"></i> Contraseña incorrecta. Intente nuevamente.
+                    </p>
+                </div>
+
+                <div class="flex space-x-3 pt-2">
+                    <button type="button" onclick="closeAuthModal()" class="w-1/2 py-3 bg-beige-200 text-gray-700 text-xs font-semibold rounded-xl uppercase">Cancelar</button>
+                    <button type="submit" class="w-1/2 py-3 bg-ruby-800 hover:bg-ruby-900 text-white text-xs font-bold rounded-xl uppercase shadow-md">Ingresar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL COMPLETO DE ADMINISTRACIÓN -->
+    <div id="modal-admin" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-4xl w-full overflow-hidden shadow-2xl border border-beige-300 relative my-8">
+            
+            <!-- Encabezado Modal Admin -->
+            <div class="bg-ruby-900 text-white px-6 py-4 flex justify-between items-center border-b border-ruby-800">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-sliders text-gold-400 text-lg"></i>
+                    <h3 class="font-serif-luxury font-bold text-lg">Panel de Administración & Gestor de Contenido</h3>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="logoutAdmin()" class="text-xs bg-ruby-800 hover:bg-ruby-700 px-3 py-1.5 rounded-lg border border-ruby-600 flex items-center space-x-1">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Cerrar Sesión</span>
+                    </button>
+                    <button onclick="toggleAdminModal()" class="text-beige-200 hover:text-white">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabs de navegación Admin -->
+            <div class="bg-beige-100 px-6 border-b border-beige-300 flex space-x-4 text-xs font-semibold">
+                <button onclick="switchAdminTab('profile')" id="tab-btn-profile" class="py-3 text-ruby-800 border-b-2 border-ruby-800">
+                    <i class="fa-solid fa-user-pen mr-1"></i> Perfil & Sitio Web
+                </button>
+                <button onclick="switchAdminTab('properties')" id="tab-btn-properties" class="py-3 text-gray-600 hover:text-ruby-800">
+                    <i class="fa-solid fa-house-laptop mr-1"></i> Gestionar Publicaciones (<span id="admin-prop-count">0</span>)
+                </button>
+                <button onclick="switchAdminTab('security')" id="tab-btn-security" class="py-3 text-gray-600 hover:text-ruby-800">
+                    <i class="fa-solid fa-key mr-1"></i> Seguridad y Clave
+                </button>
+            </div>
+
+            <!-- Contenido de las Tabs -->
+            <div class="p-6 sm:p-8 max-h-[70vh] overflow-y-auto">
+                
+                <!-- TAB 1: EDITAR INFORMACIÓN PERSONAL Y CONFIGURACIÓN GLOBAL -->
+                <div id="admin-tab-profile" class="space-y-6">
+                    <div>
+                        <h4 class="font-serif-luxury font-bold text-lg text-gray-900 mb-4 border-b border-beige-200 pb-2">Información de Contacto y Broker</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Nombre Comercial / Firma</label>
+                                <input type="text" id="adm-name" class="w-full bg-beige-50 border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Teléfono WhatsApp (Ej: +584120000000)</label>
+                                <input type="text" id="adm-phone" class="w-full bg-beige-50 border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Correo Electrónico</label>
+                                <input type="email" id="adm-email" class="w-full bg-beige-50 border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Eslogan Corto</label>
+                                <input type="text" id="adm-sub" class="w-full bg-beige-50 border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-serif-luxury font-bold text-lg text-gray-900 mb-4 border-b border-beige-200 pb-2">Textos Principales de la Página</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Título Principal (Hero)</label>
+                                <input type="text" id="adm-hero-title" class="w-full bg-beige-50 border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Descripción Principal (Hero)</label>
+                                <textarea id="adm-hero-desc" rows="2" class="w-full bg-beige-50 border border-beige-300 rounded-lg px-3 py-2 text-sm"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Biografía de Freddy / Mensaje Corporativo</label>
+                                <textarea id="adm-bio" rows="3" class="w-full bg-beige-50 border border-beige-300 rounded-lg px-3 py-2 text-sm"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: GESTIÓN DE PUBLICACIONES -->
+                <div id="admin-tab-properties" class="hidden space-y-6">
+                    <!-- FORMULARIO NUEVA / EDITAR PROPIEDAD -->
+                    <div class="bg-beige-50 p-5 rounded-xl border border-beige-300">
+                        <h4 id="form-prop-heading" class="font-serif-luxury font-bold text-base text-ruby-800 mb-3">
+                            <i class="fa-solid fa-plus-circle mr-1"></i> Publicar Nueva Propiedad
+                        </h4>
+                        
+                        <input type="hidden" id="edit-prop-id" value="">
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Título de la Publicación</label>
+                                <input type="text" id="prop-title" placeholder="Ej: Penthouse Minimalista de Doble Altura" class="w-full bg-white border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Tipo de Propiedad</label>
+                                <select id="prop-type" class="w-full bg-white border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                                    <option value="apartamento">Apartamento</option>
+                                    <option value="villa">Villa de Lujo</option>
+                                    <option value="casa">Casa / Mansión</option>
+                                    <option value="local">Local Comercial Prime</option>
+                                    <option value="penthouse">Penthouse Exclusive</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Operación</label>
+                                <select id="prop-intent" class="w-full bg-white border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                                    <option value="comprar">En Venta (Comprar)</option>
+                                    <option value="alquilar">En Alquiler (VIP)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Precio ($ USD)</label>
+                                <input type="number" id="prop-price" placeholder="Ej: 1200000" class="w-full bg-white border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Ubicación</label>
+                                <input type="text" id="prop-location" placeholder="Ej: Las Villas, Lechería" class="w-full bg-white border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Superficie (m²)</label>
+                                <input type="text" id="prop-area" placeholder="Ej: 450 m²" class="w-full bg-white border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Habitaciones / Baños</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="number" id="prop-beds" placeholder="Hab" class="w-full bg-white border border-beige-300 rounded-lg px-2 py-2 text-sm">
+                                    <input type="number" id="prop-baths" placeholder="Baños" class="w-full bg-white border border-beige-300 rounded-lg px-2 py-2 text-sm">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Amenidad Destacada</label>
+                                <input type="text" id="prop-amenity" placeholder="Ej: Muelle / Infinity Pool" class="w-full bg-white border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+
+                            <div class="sm:col-span-3 bg-white p-4 rounded-lg border border-beige-300">
+                                <label class="block text-xs font-bold uppercase text-ruby-800 mb-1">
+                                    <i class="fa-solid fa-file-image mr-1"></i> Seleccionar Fotografía (.PNG o .JPG)
+                                </label>
+                                <input type="file" id="prop-file-input" accept="image/png, image/jpeg" onchange="handleImageFileSelect(event)" class="block w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-ruby-800 file:text-white hover:file:bg-ruby-900 cursor-pointer">
+                                
+                                <div id="image-preview-container" class="mt-3 hidden flex items-center space-x-4">
+                                    <img id="image-preview" src="" alt="Previsualización" class="w-20 h-20 object-cover rounded-lg border border-beige-300">
+                                    <span class="text-xs text-emerald-700 font-semibold"><i class="fa-solid fa-circle-check"></i> Fotografía procesada correctamente</span>
+                                </div>
+                            </div>
+
+                            <div class="sm:col-span-3">
+                                <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Descripción Detallada</label>
+                                <textarea id="prop-desc" rows="3" placeholder="Escriba todos los detalles exclusivos..." class="w-full bg-white border border-beige-300 rounded-lg px-3 py-2 text-sm"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- BOTONES DEDICADOS PARA PROCESAR Y GUARDAR PUBLICACIÓN -->
+                        <div class="flex justify-end space-x-3 pt-2 border-t border-beige-200">
+                            <button onclick="clearPropForm()" type="button" class="px-4 py-2 bg-beige-200 text-gray-700 text-xs rounded-lg font-semibold uppercase hover:bg-beige-300 transition">Cancelar</button>
+                            <button onclick="savePropertyFromAdmin()" type="button" class="px-5 py-2.5 bg-ruby-800 hover:bg-ruby-900 text-white text-xs rounded-lg font-bold uppercase tracking-wider shadow">
+                                <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Publicar / Guardar en la Nube
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- LISTA DE PUBLICACIONES EXISTENTES -->
+                    <div>
+                        <h4 class="font-serif-luxury font-bold text-base text-gray-900 mb-3">Publicaciones Guardadas en Tiempo Real</h4>
+                        <div id="admin-prop-list" class="space-y-3">
+                            <!-- Renderizado con JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 3: CAMBIAR CONTRASEÑA DE SEGURIDAD -->
+                <div id="admin-tab-security" class="hidden space-y-6">
+                    <div class="max-w-md mx-auto bg-beige-50 p-6 rounded-2xl border border-beige-300 shadow-sm">
+                        <div class="text-center mb-6">
+                            <div class="w-12 h-12 rounded-full bg-ruby-800 text-gold-300 mx-auto flex items-center justify-center text-xl mb-2">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <h4 class="font-serif-luxury font-bold text-lg text-gray-900">Cambiar Contraseña de Administrador</h4>
+                            <p class="text-xs text-gray-500">Actualice la clave de acceso. Esta se guardará en la nube y se aplicará para todos los accesos administrativos.</p>
+                        </div>
+
+                        <form onsubmit="changeAdminPassword(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Nueva Contraseña</label>
+                                <input type="password" id="new-pass-input" required minlength="6" placeholder="Mínimo 6 caracteres" class="w-full bg-white border border-beige-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-ruby-800">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Confirmar Nueva Contraseña</label>
+                                <input type="password" id="confirm-pass-input" required minlength="6" placeholder="Repita la contraseña" class="w-full bg-white border border-beige-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-ruby-800">
+                            </div>
+                            <button type="submit" class="w-full py-3 bg-ruby-800 hover:bg-ruby-900 text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md transition">
+                                Guardar Nueva Contraseña
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- BOTÓN PRINCIPAL GLOBAL DE GUARDADO -->
+            <div class="bg-beige-100 px-6 py-4 border-t border-beige-300 flex justify-between items-center">
+                <span class="text-xs text-gray-500 italic">Los cambios se sincronizan en tiempo real vía Firebase Firestore.</span>
+                <button onclick="saveAllGlobalChanges()" class="px-6 py-3 bg-ruby-800 hover:bg-ruby-900 text-white font-bold text-xs rounded-xl uppercase tracking-wider shadow-md flex items-center gap-2">
+                    <i class="fa-solid fa-floppy-disk text-base"></i>
+                    <span>GUARDAR TODO Y CERRAR</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
     <!-- MODAL DETALLE DE PROPIEDAD DE ALTA GAMA -->
     <div id="modal-property" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-white rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl border border-beige-300 relative my-8">
@@ -725,10 +966,27 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT PRINCIPAL CON ESTÉTICA MEJORADA Y SEGURO DE FUNCIONES -->
-    <script>
-        const ADMIN_PASSWORD_DEFAULT = "freddy2026";
+    <!-- INTEGRACIÓN Y LÓGICA CON FIREBASE FIRESTORE EN TIEMPO REAL -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'freddy-real-estate';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "demo-key",
+            authDomain: "demo.firebaseapp.com",
+            projectId: "demo-project",
+            storageBucket: "demo.appspot.com"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
         let isAdminLoggedIn = false;
+        let adminPassword = "freddy2026"; // Clave por defecto
 
         const defaultProfile = {
             name: "FREDDY REFERENTE",
@@ -742,7 +1000,7 @@
 
         const defaultProperties = [
             {
-                id: 1,
+                id: "1",
                 title: "Apartamento Luxury Panoramic Sky",
                 type: "apartamento",
                 intent: "comprar",
@@ -757,7 +1015,7 @@
                 description: "Apartamento exclusivo de diseño ultramoderno con acabados de cuarzo, ventanales de piso a techo y terraza integrada."
             },
             {
-                id: 2,
+                id: "2",
                 title: "Villa Rubí Royal & Resort",
                 type: "villa",
                 intent: "comprar",
@@ -770,65 +1028,90 @@
                 amenity: "Muelle Privado + Helipuerto",
                 image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1000&q=80",
                 description: "Espectacular Villa con muelle privado para yates de hasta 80 pies y piscina infinity climatizada."
-            },
-            {
-                id: 3,
-                title: "Penthouse Minimalist Sky Horizon",
-                type: "penthouse",
-                intent: "comprar",
-                price: 2200000,
-                formattedPrice: "$2,200,000 USD",
-                location: "Distrito Financiero Prime",
-                area: "650 m²",
-                beds: 4,
-                baths: 5,
-                amenity: "Piscina Privada en Rooftop",
-                image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1000&q=80",
-                description: "Penthouse dúplex con vistas panorámicas de 360 grados, cava climatizada y ascensor privado."
-            },
-            {
-                id: 4,
-                title: "Residencia Exclusiva Beige Signature",
-                type: "casa",
-                intent: "alquilar",
-                price: 15000,
-                formattedPrice: "$15,000 USD / mes",
-                location: "Country Club Heights",
-                area: "850 m²",
-                beds: 5,
-                baths: 6,
-                amenity: "Spa + Casa de Huéspedes",
-                image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1000&q=80",
-                description: "Mansión de estilo mediterráneo contemporáneo para estancias de alto perfil."
-            },
-            {
-                id: 5,
-                title: "Local Comercial Flagship Store Luxury",
-                type: "local",
-                intent: "comprar",
-                price: 3100000,
-                formattedPrice: "$3,100,000 USD",
-                location: "Avenida Comercial Prime",
-                area: "480 m²",
-                beds: 0,
-                baths: 4,
-                amenity: "Escaparate de Doble Altura",
-                image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1000&q=80",
-                description: "Espacio comercial icónico ideal para tiendas boutique internacional o firmas de alta gama."
             }
         ];
 
-        let currentProfile = JSON.parse(localStorage.getItem('freddy_profile')) || defaultProfile;
-        let propertiesData = JSON.parse(localStorage.getItem('freddy_properties')) || defaultProperties;
+        let currentProfile = { ...defaultProfile };
+        let propertiesData = [...defaultProperties];
         let currentImageBase64 = "";
 
-        window.onload = function() {
-            applyProfileToUI();
-            renderProperties(propertiesData);
-        };
+        // Inicializar Autenticación y Escuchadores de Firestore en Tiempo Real
+        async function initApp() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (e) {
+                console.error("Error en auth:", e);
+            }
 
-        // GESTIÓN DE ACCESO CON CONTRASEÑA
-        function requestAdminAccess() {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    currentUser = user;
+                    subscribeToData();
+                }
+            });
+        }
+
+        // Suscripción a datos públicos en tiempo real
+        function subscribeToData() {
+            if (!currentUser) return;
+
+            // Escuchar Perfil y Configuración en tiempo real
+            const profileRef = doc(db, 'artifacts', appId, 'public', 'data', 'config', 'profile');
+            onSnapshot(profileRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.data();
+                    currentProfile = { ...defaultProfile, ...data };
+                    if (data.adminPassword) adminPassword = data.adminPassword;
+                } else {
+                    // Inicializar si no existe
+                    setDoc(profileRef, { ...defaultProfile, adminPassword });
+                }
+                applyProfileToUI();
+            }, (err) => console.error("Error leyendo perfil:", err));
+
+            // Escuchar Publicaciones en tiempo real
+            const propertiesRef = doc(db, 'artifacts', appId, 'public', 'data', 'catalog', 'items');
+            onSnapshot(propertiesRef, (snapshot) => {
+                if (snapshot.exists() && snapshot.data().list) {
+                    propertiesData = snapshot.data().list;
+                } else {
+                    // Inicializar publicaciones por defecto
+                    setDoc(propertiesRef, { list: defaultProperties });
+                }
+                renderProperties(propertiesData);
+                if (isAdminLoggedIn) renderAdminPropertyList();
+            }, (err) => console.error("Error leyendo publicaciones:", err));
+        }
+
+        // Sincronizar Cambios a Firestore
+        async function saveProfileToFirestore(updatedProfile) {
+            if (!currentUser) return;
+            try {
+                const profileRef = doc(db, 'artifacts', appId, 'public', 'data', 'config', 'profile');
+                await setDoc(profileRef, { ...updatedProfile, adminPassword }, { merge: true });
+                showToast("Configuración guardada en la nube");
+            } catch (err) {
+                console.error("Error guardando perfil:", err);
+            }
+        }
+
+        async function savePropertiesToFirestore(updatedList) {
+            if (!currentUser) return;
+            try {
+                const propertiesRef = doc(db, 'artifacts', appId, 'public', 'data', 'catalog', 'items');
+                await setDoc(propertiesRef, { list: updatedList });
+                showToast("Publicaciones sincronizadas en todos los dispositivos");
+            } catch (err) {
+                console.error("Error guardando publicaciones:", err);
+            }
+        }
+
+        // Exponer funciones globales
+        window.requestAdminAccess = function() {
             if (isAdminLoggedIn) {
                 toggleAdminModal();
             } else {
@@ -836,12 +1119,12 @@
                 document.getElementById('auth-error').classList.add('hidden');
                 document.getElementById('modal-auth').classList.remove('hidden');
             }
-        }
+        };
 
-        function verifyAdminPassword(e) {
+        window.verifyAdminPassword = function(e) {
             e.preventDefault();
             const pass = document.getElementById('auth-password').value;
-            if (pass === ADMIN_PASSWORD_DEFAULT) {
+            if (pass === adminPassword) {
                 isAdminLoggedIn = true;
                 closeAuthModal();
                 toggleAdminModal();
@@ -849,25 +1132,134 @@
             } else {
                 document.getElementById('auth-error').classList.remove('hidden');
             }
-        }
+        };
 
-        function closeAuthModal() {
+        window.changeAdminPassword = async function(e) {
+            e.preventDefault();
+            const newPass = document.getElementById('new-pass-input').value;
+            const confirmPass = document.getElementById('confirm-pass-input').value;
+
+            if (newPass !== confirmPass) {
+                alert("Las contraseñas no coinciden. Verifíquelas.");
+                return;
+            }
+
+            adminPassword = newPass;
+            await saveProfileToFirestore(currentProfile);
+            document.getElementById('new-pass-input').value = "";
+            document.getElementById('confirm-pass-input').value = "";
+            showToast("Contraseña cambiada exitosamente");
+        };
+
+        window.closeAuthModal = function() {
             document.getElementById('modal-auth').classList.add('hidden');
-        }
+        };
 
-        function logoutAdmin() {
+        window.logoutAdmin = function() {
             isAdminLoggedIn = false;
             toggleAdminModal();
             showToast("Sesión de administración cerrada");
-        }
+        };
+
+        window.savePropertyFromAdmin = async function() {
+            const idInput = document.getElementById('edit-prop-id').value;
+            const title = document.getElementById('prop-title').value.trim();
+            const type = document.getElementById('prop-type').value;
+            const intent = document.getElementById('prop-intent').value;
+            const price = parseFloat(document.getElementById('prop-price').value) || 0;
+            const location = document.getElementById('prop-location').value.trim();
+            const area = document.getElementById('prop-area').value.trim();
+            const beds = parseInt(document.getElementById('prop-beds').value) || 0;
+            const baths = parseInt(document.getElementById('prop-baths').value) || 0;
+            const amenity = document.getElementById('prop-amenity').value.trim();
+            const desc = document.getElementById('prop-desc').value.trim();
+
+            if (!title || !location || price <= 0) {
+                alert("Por favor ingrese al menos el Título, Ubicación y un Precio válido.");
+                return;
+            }
+
+            const formattedPrice = intent === 'alquilar' ? `$${price.toLocaleString('en-US')} USD / mes` : `$${price.toLocaleString('en-US')} USD`;
+
+            if (idInput) {
+                const index = propertiesData.findIndex(p => String(p.id) === String(idInput));
+                if (index !== -1) {
+                    propertiesData[index] = {
+                        ...propertiesData[index],
+                        title, type, intent, price, formattedPrice, location, area, beds, baths, amenity,
+                        description: desc,
+                        image: currentImageBase64 || propertiesData[index].image
+                    };
+                }
+            } else {
+                const newProperty = {
+                    id: String(Date.now()),
+                    title, type, intent, price, formattedPrice, location, area, beds, baths, amenity,
+                    description: desc,
+                    image: currentImageBase64 || 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1000&q=80'
+                };
+                propertiesData.unshift(newProperty);
+            }
+
+            await savePropertiesToFirestore(propertiesData);
+            clearPropForm();
+        };
+
+        window.deletePropertyInAdmin = async function(id) {
+            if (confirm("¿Está seguro de que desea eliminar esta publicación?")) {
+                propertiesData = propertiesData.filter(p => String(p.id) !== String(id));
+                await savePropertiesToFirestore(propertiesData);
+            }
+        };
+
+        window.saveAllGlobalChanges = async function() {
+            currentProfile.name = document.getElementById('adm-name').value.trim() || currentProfile.name;
+            currentProfile.sub = document.getElementById('adm-sub').value.trim() || currentProfile.sub;
+            currentProfile.phone = document.getElementById('adm-phone').value.trim() || currentProfile.phone;
+            currentProfile.email = document.getElementById('adm-email').value.trim() || currentProfile.email;
+            currentProfile.heroTitle = document.getElementById('adm-hero-title').value.trim() || currentProfile.heroTitle;
+            currentProfile.heroDesc = document.getElementById('adm-hero-desc').value.trim() || currentProfile.heroDesc;
+            currentProfile.bio = document.getElementById('adm-bio').value.trim() || currentProfile.bio;
+
+            await saveProfileToFirestore(currentProfile);
+            toggleAdminModal();
+        };
+
+        window.switchAdminTab = function(tab) {
+            const tabProf = document.getElementById('admin-tab-profile');
+            const tabProp = document.getElementById('admin-tab-properties');
+            const tabSec = document.getElementById('admin-tab-security');
+
+            const btnProf = document.getElementById('tab-btn-profile');
+            const btnProp = document.getElementById('tab-btn-properties');
+            const btnSec = document.getElementById('tab-btn-security');
+
+            tabProf.classList.add('hidden');
+            tabProp.classList.add('hidden');
+            tabSec.classList.add('hidden');
+
+            btnProf.className = "py-3 text-gray-600 hover:text-ruby-800 font-semibold";
+            btnProp.className = "py-3 text-gray-600 hover:text-ruby-800 font-semibold";
+            btnSec.className = "py-3 text-gray-600 hover:text-ruby-800 font-semibold";
+
+            if (tab === 'profile') {
+                tabProf.classList.remove('hidden');
+                btnProf.className = "py-3 text-ruby-800 border-b-2 border-ruby-800 font-semibold";
+            } else if (tab === 'properties') {
+                tabProp.classList.remove('hidden');
+                btnProp.className = "py-3 text-ruby-800 border-b-2 border-ruby-800 font-semibold";
+                renderAdminPropertyList();
+            } else {
+                tabSec.classList.remove('hidden');
+                btnSec.className = "py-3 text-ruby-800 border-b-2 border-ruby-800 font-semibold";
+            }
+        };
 
         function showToast(msg) {
             const toast = document.getElementById('toast-notification');
             document.getElementById('toast-message').innerText = msg;
             toast.classList.remove('hidden');
-            setTimeout(() => {
-                toast.classList.add('hidden');
-            }, 3000);
+            setTimeout(() => toast.classList.add('hidden'), 3000);
         }
 
         function applyProfileToUI() {
@@ -916,10 +1308,9 @@
             const noResults = document.getElementById('no-results');
             
             if (!grid) return;
-            
             grid.innerHTML = '';
 
-            if (items.length === 0) {
+            if (!items || items.length === 0) {
                 if (noResults) noResults.classList.remove('hidden');
                 return;
             } else {
@@ -968,10 +1359,10 @@
                             </div>
                             
                             <div class="flex gap-2">
-                                <button onclick="openPropertyModal(${prop.id})" class="flex-1 py-3 bg-beige-200 hover:bg-beige-300 text-gray-800 text-xs font-bold rounded-xl uppercase tracking-wider transition">
+                                <button onclick="openPropertyModal('${prop.id}')" class="flex-1 py-3 bg-beige-200 hover:bg-beige-300 text-gray-800 text-xs font-bold rounded-xl uppercase tracking-wider transition">
                                     Detalles
                                 </button>
-                                <button onclick="contactPropertyWhatsApp(${prop.id})" class="flex-1 py-3 ruby-gradient-bg hover:bg-ruby-900 text-white text-xs font-bold rounded-xl uppercase tracking-wider transition flex items-center justify-center gap-1 shadow-ruby-glow border border-gold-500/30">
+                                <button onclick="contactPropertyWhatsApp('${prop.id}')" class="flex-1 py-3 ruby-gradient-bg hover:bg-ruby-900 text-white text-xs font-bold rounded-xl uppercase tracking-wider transition flex items-center justify-center gap-1 shadow-ruby-glow border border-gold-500/30">
                                     <i class="fa-brands fa-whatsapp text-gold-300"></i> Contactar
                                 </button>
                             </div>
@@ -982,61 +1373,7 @@
             });
         }
 
-        function resetFilters() {
-            document.getElementById('filter-intent').value = 'all';
-            document.getElementById('filter-type').value = 'all';
-            document.getElementById('filter-max-price').value = '';
-            filterProperties();
-        }
-
-        // CONTROL DE SECCIONES Y CATÁLOGO
-        function showSection(sectionId) {
-            ['hero', 'vender', 'nosotros'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.classList.add('hidden');
-            });
-            
-            const target = document.getElementById(sectionId);
-            if (target) {
-                target.classList.remove('hidden');
-                target.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        function navigateToCatalog(type) {
-            showSection('hero');
-            const typeFilter = document.getElementById('filter-type');
-            const intentFilter = document.getElementById('filter-intent');
-            
-            if (type === 'comprar' || type === 'alquilar') {
-                if (intentFilter) intentFilter.value = type;
-                if (typeFilter) typeFilter.value = 'all';
-            } else if (typeFilter) {
-                typeFilter.value = type;
-            }
-
-            filterProperties();
-            const catalog = document.getElementById('catalogo');
-            if (catalog) catalog.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function filterProperties() {
-            const intent = document.getElementById('filter-intent')?.value || 'all';
-            const type = document.getElementById('filter-type')?.value || 'all';
-            const maxBudget = parseFloat(document.getElementById('filter-max-price')?.value) || Infinity;
-
-            const filtered = propertiesData.filter(item => {
-                const matchesIntent = (intent === 'all') || (item.intent === intent);
-                const matchesType = (type === 'all') || (item.type === type);
-                const matchesBudget = Number(item.price) <= maxBudget;
-                return matchesIntent && matchesType && matchesBudget;
-            });
-
-            renderProperties(filtered);
-        }
-
-        // CARGA DE FOTOGRAFÍA EN ADMIN (PNG/JPG EN BASE64)
-        function handleImageFileSelect(event) {
+        window.handleImageFileSelect = function(event) {
             const file = event.target.files[0];
             if (!file) return;
 
@@ -1056,56 +1393,9 @@
                 }
             };
             reader.readAsDataURL(file);
-        }
+        };
 
-        // CREAR / EDITAR PUBLICACIÓN
-        function savePropertyFromAdmin() {
-            const idInput = document.getElementById('edit-prop-id').value;
-            const title = document.getElementById('prop-title').value.trim();
-            const type = document.getElementById('prop-type').value;
-            const intent = document.getElementById('prop-intent').value;
-            const price = parseFloat(document.getElementById('prop-price').value) || 0;
-            const location = document.getElementById('prop-location').value.trim();
-            const area = document.getElementById('prop-area').value.trim();
-            const beds = parseInt(document.getElementById('prop-beds').value) || 0;
-            const baths = parseInt(document.getElementById('prop-baths').value) || 0;
-            const amenity = document.getElementById('prop-amenity').value.trim();
-            const desc = document.getElementById('prop-desc').value.trim();
-
-            if (!title || !location || price <= 0) {
-                alert("Por favor ingrese al menos el Título, Ubicación y un Precio válido.");
-                return;
-            }
-
-            const formattedPrice = intent === 'alquilar' ? `$${price.toLocaleString('en-US')} USD / mes` : `$${price.toLocaleString('en-US')} USD`;
-
-            if (idInput) {
-                const index = propertiesData.findIndex(p => String(p.id) === String(idInput));
-                if (index !== -1) {
-                    propertiesData[index] = {
-                        ...propertiesData[index],
-                        title, type, intent, price, formattedPrice, location, area, beds, baths, amenity,
-                        description: desc,
-                        image: currentImageBase64 || propertiesData[index].image
-                    };
-                }
-            } else {
-                const newProperty = {
-                    id: Date.now(),
-                    title, type, intent, price, formattedPrice, location, area, beds, baths, amenity,
-                    description: desc,
-                    image: currentImageBase64 || 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1000&q=80'
-                };
-                propertiesData.unshift(newProperty);
-            }
-
-            clearPropForm();
-            renderAdminPropertyList();
-            renderProperties(propertiesData);
-            showToast("Publicación procesada correctamente");
-        }
-
-        function editPropertyInAdmin(id) {
+        window.editPropertyInAdmin = function(id) {
             const prop = propertiesData.find(p => String(p.id) === String(id));
             if (!prop) return;
 
@@ -1130,19 +1420,9 @@
             }
 
             document.getElementById('form-prop-heading').innerHTML = `<i class="fa-solid fa-pen-to-square mr-1"></i> Editando Propiedad #${prop.id}`;
-        }
+        };
 
-        function deletePropertyInAdmin(id) {
-            if (confirm("¿Está seguro de que desea eliminar esta publicación?")) {
-                propertiesData = propertiesData.filter(p => String(p.id) !== String(id));
-                localStorage.setItem('freddy_properties', JSON.stringify(propertiesData));
-                renderAdminPropertyList();
-                renderProperties(propertiesData);
-                showToast("Publicación eliminada exitosamente");
-            }
-        }
-
-        function clearPropForm() {
+        window.clearPropForm = function() {
             document.getElementById('edit-prop-id').value = "";
             document.getElementById('prop-title').value = "";
             document.getElementById('prop-price').value = "";
@@ -1159,12 +1439,7 @@
             if (container) container.classList.add('hidden');
             
             document.getElementById('form-prop-heading').innerHTML = `<i class="fa-solid fa-plus-circle mr-1"></i> Publicar Nueva Propiedad`;
-        }
-
-        function savePropertyChangesExplicitly() {
-            localStorage.setItem('freddy_properties', JSON.stringify(propertiesData));
-            showToast("Publicaciones guardadas correctamente");
-        }
+        };
 
         function renderAdminPropertyList() {
             const list = document.getElementById('admin-prop-list');
@@ -1204,7 +1479,7 @@
             });
         }
 
-        function toggleAdminModal() {
+        window.toggleAdminModal = function() {
             const modal = document.getElementById('modal-admin');
             if (modal) {
                 modal.classList.toggle('hidden');
@@ -1212,47 +1487,9 @@
                     renderAdminPropertyList();
                 }
             }
-        }
+        };
 
-        function switchAdminTab(tab) {
-            const tabProf = document.getElementById('admin-tab-profile');
-            const tabProp = document.getElementById('admin-tab-properties');
-            const btnProf = document.getElementById('tab-btn-profile');
-            const btnProp = document.getElementById('tab-btn-properties');
-
-            if (tab === 'profile') {
-                tabProf.classList.remove('hidden');
-                tabProp.classList.add('hidden');
-                btnProf.className = "py-3 text-ruby-800 border-b-2 border-ruby-800 font-semibold";
-                btnProp.className = "py-3 text-gray-600 hover:text-ruby-800 font-semibold";
-            } else {
-                tabProf.classList.add('hidden');
-                tabProp.classList.remove('hidden');
-                btnProf.className = "py-3 text-gray-600 hover:text-ruby-800 font-semibold";
-                btnProp.className = "py-3 text-ruby-800 border-b-2 border-ruby-800 font-semibold";
-                renderAdminPropertyList();
-            }
-        }
-
-        function saveAllGlobalChanges() {
-            currentProfile.name = document.getElementById('adm-name').value.trim() || currentProfile.name;
-            currentProfile.sub = document.getElementById('adm-sub').value.trim() || currentProfile.sub;
-            currentProfile.phone = document.getElementById('adm-phone').value.trim() || currentProfile.phone;
-            currentProfile.email = document.getElementById('adm-email').value.trim() || currentProfile.email;
-            currentProfile.heroTitle = document.getElementById('adm-hero-title').value.trim() || currentProfile.heroTitle;
-            currentProfile.heroDesc = document.getElementById('adm-hero-desc').value.trim() || currentProfile.heroDesc;
-            currentProfile.bio = document.getElementById('adm-bio').value.trim() || currentProfile.bio;
-
-            localStorage.setItem('freddy_profile', JSON.stringify(currentProfile));
-            localStorage.setItem('freddy_properties', JSON.stringify(propertiesData));
-
-            applyProfileToUI();
-            renderProperties(propertiesData);
-            toggleAdminModal();
-            showToast("Todos los cambios guardados con éxito");
-        }
-
-        function openPropertyModal(id) {
+        window.openPropertyModal = function(id) {
             const prop = propertiesData.find(p => String(p.id) === String(id));
             if (!prop) return;
 
@@ -1276,63 +1513,45 @@
             document.getElementById('modal-prop-wa-btn').href = `https://wa.me/${cleanPhone}?text=${msg}`;
 
             modal.classList.remove('hidden');
-        }
+        };
 
-        function closePropertyModal() {
+        window.closePropertyModal = function() {
             const modal = document.getElementById('modal-property');
             if (modal) modal.classList.add('hidden');
-        }
+        };
 
-        function contactPropertyWhatsApp(id) {
+        window.contactPropertyWhatsApp = function(id) {
             const prop = propertiesData.find(p => String(p.id) === String(id));
             if (!prop) return;
             const cleanPhone = currentProfile.phone.replace(/\+/g, '').replace(/\s/g, '');
             const msg = encodeURIComponent(`Hola ${currentProfile.name}, me interesa solicitar información sobre: ${prop.title} (${prop.formattedPrice}).`);
             window.open(`https://wa.me/${cleanPhone}?text=${msg}`, '_blank');
-        }
+        };
 
-        function submitConsignForm(e) {
-            e.preventDefault();
-            const name = document.getElementById('sell-name').value;
-            const phone = document.getElementById('sell-phone').value;
-            const type = document.getElementById('sell-type').value;
-            const location = document.getElementById('sell-location').value;
-            const price = document.getElementById('sell-price').value;
-            const details = document.getElementById('sell-details').value;
+        window.filterProperties = function() {
+            const intent = document.getElementById('filter-intent')?.value || 'all';
+            const type = document.getElementById('filter-type')?.value || 'all';
+            const maxBudget = parseFloat(document.getElementById('filter-max-price')?.value) || Infinity;
 
-            const cleanPhone = currentProfile.phone.replace(/\+/g, '').replace(/\s/g, '');
-            const msg = encodeURIComponent(`Hola ${currentProfile.name}, deseo consignar/vender una propiedad.\n\n` +
-                `*Propietario:* ${name}\n` +
-                `*Teléfono:* ${phone}\n` +
-                `*Tipo:* ${type}\n` +
-                `*Ubicación:* ${location}\n` +
-                `*Precio estimado:* $${price} USD\n` +
-                `*Detalles:* ${details}`);
+            const filtered = propertiesData.filter(item => {
+                const matchesIntent = (intent === 'all') || (item.intent === intent);
+                const matchesType = (type === 'all') || (item.type === type);
+                const matchesBudget = Number(item.price) <= maxBudget;
+                return matchesIntent && matchesType && matchesBudget;
+            });
 
-            window.open(`https://wa.me/${cleanPhone}?text=${msg}`, '_blank');
-        }
+            renderProperties(filtered);
+        };
 
-        function setDeviceFrame(device) {
-            const container = document.getElementById('main-viewport');
-            const btnMob = document.getElementById('view-mobile');
-            const btnTab = document.getElementById('view-tablet');
-            const btnDesk = document.getElementById('view-desktop');
+        window.resetFilters = function() {
+            document.getElementById('filter-intent').value = 'all';
+            document.getElementById('filter-type').value = 'all';
+            document.getElementById('filter-max-price').value = '';
+            filterProperties();
+        };
 
-            btnMob.className = "px-2.5 py-1 text-xs rounded-lg text-beige-300 font-bold hover:text-white transition";
-            btnTab.className = "px-2.5 py-1 text-xs rounded-lg text-beige-300 font-bold hover:text-white transition";
-            btnDesk.className = "px-2.5 py-1 text-xs rounded-lg text-beige-300 font-bold hover:text-white transition";
-
-            if (device === 'mobile') {
-                container.style.maxWidth = '375px';
-                btnMob.className = "px-2.5 py-1 text-xs rounded-lg bg-ruby-800 text-white font-bold shadow-md";
-            } else if (device === 'tablet') {
-                container.style.maxWidth = '768px';
-                btnTab.className = "px-2.5 py-1 text-xs rounded-lg bg-ruby-800 text-white font-bold shadow-md";
-            } else {
-                container.style.maxWidth = '100%';
-                btnDesk.className = "px-2.5 py-1 text-xs rounded-lg bg-ruby-800 text-white font-bold shadow-md";
-            }
-        }
+        // Iniciar la aplicación
+        initApp();
     </script>
 </body>
 </html>
