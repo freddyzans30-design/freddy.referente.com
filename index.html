@@ -1,0 +1,1338 @@
+<!-- ... existing code ... -->
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FREDDY REFERENTE | Real Estate Luxury</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ruby: {
+                            50: '#FDF2F4',
+                            100: '#FCE7EB',
+                            200: '#F7C5D1',
+                            300: '#F094A8',
+                            400: '#E25B7B',
+                            500: '#CB2E53',
+                            600: '#B01B3F',
+                            700: '#911130',
+                            800: '#800020', // Ruby Principal Figma
+                            900: '#5C0017',
+                            950: '#3D000D',
+                        },
+                        beige: {
+                            50: '#FFFEFC',
+                            100: '#FDFBF7', // Beige Claro Principal
+                            200: '#F7F2E9',
+                            300: '#EFE6D5',
+                            400: '#DFD1B8',
+                            500: '#C7B291',
+                            600: '#A89270',
+                            700: '#877253',
+                            800: '#66553E',
+                            900: '#473A2A',
+                        },
+                        gold: {
+                            300: '#F3E5AB',
+                            400: '#E6CA65',
+                            500: '#D4AF37', // Acabado de Lujo Dorado
+                            600: '#AA8828',
+                        }
+                    },
+                    fontFamily: {
+                        serifLuxury: ['Playfair Display', 'Georgia', 'serif'],
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'luxury': '0 20px 40px -15px rgba(128, 0, 32, 0.08), 0 0 15px rgba(0,0,0,0.03)',
+                        'gold-glow': '0 0 25px rgba(212, 175, 55, 0.25)',
+                        'ruby-glow': '0 10px 30px -5px rgba(128, 0, 32, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .font-serif-luxury { font-family: 'Playfair Display', Georgia, serif; }
+        .glass-card {
+            background: rgba(253, 251, 247, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(239, 230, 213, 0.8);
+        }
+        .glass-dark {
+            background: rgba(61, 0, 13, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #F3E5AB 0%, #D4AF37 50%, #AA8828 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .ruby-gradient-bg {
+            background: linear-gradient(135deg, #800020 0%, #5C0017 100%);
+        }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #FDFBF7; }
+        ::-webkit-scrollbar-thumb { background: #800020; border-radius: 3px; }
+    </style>
+</head>
+<body class="bg-beige-100 text-gray-800 font-sans antialiased selection:bg-ruby-800 selection:text-white">
+
+    <!-- PREVISUALIZADOR DE DISPOSITIVOS -->
+    <div class="bg-gray-950 text-beige-200 py-2.5 px-4 sticky top-0 z-50 border-b border-gold-500/30 flex justify-between items-center text-xs shadow-lg">
+        <div class="flex items-center space-x-2">
+            <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+            <span class="font-mono text-[11px] text-gray-300">freddy.referente.com</span>
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded text-[10px] bg-ruby-900/80 text-gold-400 border border-gold-500/30 uppercase font-semibold">GitHub Pages Live</span>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-3">
+            <span class="hidden md:inline text-[11px] text-gray-400 font-light">Vista:</span>
+            <button onclick="setDeviceFrame('mobile')" id="view-mobile" class="px-2.5 py-1 text-xs rounded-lg text-beige-300 hover:text-white transition flex items-center gap-1">
+                <i class="fa-solid fa-mobile-screen"></i> <span class="hidden sm:inline">Móvil</span>
+            </button>
+            <button onclick="setDeviceFrame('tablet')" id="view-tablet" class="px-2.5 py-1 text-xs rounded-lg text-beige-300 hover:text-white transition flex items-center gap-1">
+                <i class="fa-solid fa-tablet-screen-button"></i> <span class="hidden sm:inline">Tablet</span>
+            </button>
+            <button onclick="setDeviceFrame('desktop')" id="view-desktop" class="px-2.5 py-1 text-xs rounded-lg bg-ruby-800 text-white font-bold shadow-md flex items-center gap-1">
+                <i class="fa-solid fa-desktop"></i> <span class="hidden sm:inline">Escritorio</span>
+            </button>
+            <button onclick="requestAdminAccess()" class="ml-2 px-3 py-1 bg-gold-500/20 hover:bg-gold-500 text-gold-300 hover:text-gray-950 border border-gold-500/40 rounded-lg text-[11px] font-bold uppercase transition tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-user-gear"></i>
+                <span>Admin</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTENEDOR PRINCIPAL RESPONSIVO -->
+    <div id="main-viewport" class="mx-auto transition-all duration-300 min-h-screen flex flex-col justify-between shadow-2xl bg-beige-50">
+        
+        <!-- ENCABEZADO DE LUJO -->
+        <header class="bg-beige-100/90 backdrop-blur-md sticky top-[41px] z-40 border-b border-beige-300/70 transition-all duration-300">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                <!-- Logotipo -->
+                <div class="flex items-center space-x-3.5 group cursor-pointer" onclick="showSection('hero')">
+                    <div class="w-11 h-11 rounded-full ruby-gradient-bg flex items-center justify-center text-white font-serif-luxury font-bold text-xl shadow-lg border-2 border-gold-500/50 group-hover:scale-105 transition duration-300">
+                        FR
+                    </div>
+                    <div>
+                        <h1 class="font-serif-luxury font-bold text-lg sm:text-xl text-gray-900 tracking-wider flex items-center gap-1.5">
+                            <span id="dyn-brand-name">FREDDY REFERENTE</span>
+                            <i class="fa-solid fa-circle-check text-ruby-600 text-xs" title="Broker Verificado"></i>
+                        </h1>
+                        <p id="dyn-brand-sub" class="text-[10px] text-ruby-800 font-semibold tracking-widest uppercase">Real Estate Luxury</p>
+                    </div>
+                </div>
+
+                <!-- Navegación Escritorio -->
+                <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold tracking-widest uppercase text-gray-700">
+                    <a href="#inicio" onclick="showSection('hero')" class="hover:text-ruby-800 transition relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-ruby-800 hover:after:w-full after:transition-all">Inicio</a>
+                    <a href="#catalogo" onclick="navigateToCatalog('all')" class="hover:text-ruby-800 transition relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-ruby-800 hover:after:w-full after:transition-all">Colección Privada</a>
+                    <a href="#vender" onclick="showSection('vender')" class="hover:text-ruby-800 transition relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-ruby-800 hover:after:w-full after:transition-all">Vender Propiedad</a>
+                    <a href="#nosotros" onclick="showSection('nosotros')" class="hover:text-ruby-800 transition relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-ruby-800 hover:after:w-full after:transition-all">Sobre Nosotros</a>
+                </nav>
+
+                <!-- Botón de Contacto Rápido -->
+                <div class="hidden sm:flex items-center space-x-3">
+                    <a id="hdr-whatsapp-btn" href="#" target="_blank" class="px-5 py-2.5 ruby-gradient-bg hover:bg-ruby-900 text-white rounded-full text-xs font-bold uppercase tracking-wider shadow-ruby-glow hover:shadow-lg transition flex items-center space-x-2 border border-gold-500/30">
+                        <i class="fa-brands fa-whatsapp text-sm text-gold-300"></i>
+                        <span>Asesoría VIP</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow">
+            <!-- SECCIÓN HERO CON SELECTOR AMIGABLE DE REQUERIMIENTO -->
+            <section id="hero" class="relative py-16 sm:py-24 bg-gradient-to-b from-beige-100 via-beige-200/50 to-beige-100 border-b border-beige-300/60 overflow-hidden">
+                <div class="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-ruby-800/5 blur-3xl pointer-events-none"></div>
+                <div class="absolute -left-20 -bottom-20 w-96 h-96 rounded-full bg-gold-500/10 blur-3xl pointer-events-none"></div>
+
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center relative z-10">
+                    <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-ruby-900/10 border border-ruby-800/20 text-ruby-800 text-xs font-bold tracking-widest uppercase mb-6 shadow-sm">
+                        <i class="fa-solid fa-crown text-gold-500"></i>
+                        <span>Portafolio Inmobiliario de Alto Valor</span>
+                    </div>
+
+                    <h2 id="dyn-hero-title" class="font-serif-luxury text-3xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight mb-6">
+                        Encuentre el espacio exclusivo que merece su estilo de vida.
+                    </h2>
+
+                    <p id="dyn-hero-desc" class="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed mb-10 font-light">
+                        Seleccionamos minuciosamente villas paradisíacas, apartamentos penthouse, casas y locales comerciales prime para los clientes más exigentes.
+                    </p>
+
+                    <!-- TARJETA INTERACTIVA DE REQUERIMIENTO INICIAL -->
+                    <div class="max-w-3xl mx-auto glass-card p-6 sm:p-8 rounded-3xl shadow-luxury border border-beige-300">
+                        <h3 class="font-serif-luxury font-bold text-gray-900 text-lg mb-2">¿Cómo podemos guiarle hoy?</h3>
+                        <p class="text-xs text-gray-500 mb-6 uppercase tracking-wider">Seleccione su requerimiento para llevarle directamente a su catálogo ideal</p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <button onclick="navigateToCatalog('comprar')" class="group p-5 bg-white hover:bg-ruby-900 hover:text-white rounded-2xl border border-beige-300 shadow-sm transition-all duration-300 text-center flex flex-col items-center">
+                                <div class="w-12 h-12 rounded-full bg-beige-200 group-hover:bg-ruby-800 flex items-center justify-center text-ruby-800 group-hover:text-gold-300 mb-3 transition">
+                                    <i class="fa-solid fa-key text-lg"></i>
+                                </div>
+                                <span class="font-serif-luxury font-bold text-sm tracking-wide mb-1">Deseo Comprar</span>
+                                <span class="text-[11px] text-gray-500 group-hover:text-beige-200 font-light">Villas, Casas, Penthouses & Locales</span>
+                            </button>
+
+                            <button onclick="navigateToCatalog('alquilar')" class="group p-5 bg-white hover:bg-ruby-900 hover:text-white rounded-2xl border border-beige-300 shadow-sm transition-all duration-300 text-center flex flex-col items-center">
+                                <div class="w-12 h-12 rounded-full bg-beige-200 group-hover:bg-ruby-800 flex items-center justify-center text-ruby-800 group-hover:text-gold-300 mb-3 transition">
+                                    <i class="fa-solid fa-building-user text-lg"></i>
+                                </div>
+                                <span class="font-serif-luxury font-bold text-sm tracking-wide mb-1">Deseo Alquilar</span>
+                                <span class="text-[11px] text-gray-500 group-hover:text-beige-200 font-light">Residencias de Lujo & Penthouses</span>
+                            </button>
+
+                            <button onclick="showSection('vender')" class="group p-5 bg-white hover:bg-ruby-900 hover:text-white rounded-2xl border border-beige-300 shadow-sm transition-all duration-300 text-center flex flex-col items-center">
+                                <div class="w-12 h-12 rounded-full bg-beige-200 group-hover:bg-ruby-800 flex items-center justify-center text-ruby-800 group-hover:text-gold-300 mb-3 transition">
+                                    <i class="fa-solid fa-handshake text-lg"></i>
+                                </div>
+                                <span class="font-serif-luxury font-bold text-sm tracking-wide mb-1">Deseo Vender</span>
+                                <span class="text-[11px] text-gray-500 group-hover:text-beige-200 font-light">Consigne su propiedad con nosotros</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN CATÁLOGO MARKETPLACE DE LUJO -->
+            <section id="catalogo" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 pb-4 border-b border-beige-300/80">
+                    <div>
+                        <span class="text-xs font-bold text-ruby-800 uppercase tracking-widest">Catálogo Exclusivo</span>
+                        <h2 class="font-serif-luxury text-2xl sm:text-4xl font-bold text-gray-900 mt-1">Colección de Inmuebles</h2>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2 md:mt-0 font-light max-w-sm">Explore nuestras propiedades seleccionadas con precios transparentes y atención confidencial.</p>
+                </div>
+
+                <!-- BARRA DE FILTROS MARKETPLACE -->
+                <div class="glass-card p-5 rounded-2xl shadow-luxury mb-10 border border-beige-300">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Filtro Operación -->
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-700 mb-1">Operación</label>
+                            <select id="filter-intent" onchange="filterProperties()" class="w-full bg-white border border-beige-300 rounded-xl px-3.5 py-2.5 text-xs font-medium focus:outline-none focus:border-ruby-800 shadow-sm">
+                                <option value="all">Todas las operaciones</option>
+                                <option value="comprar">En Venta (Comprar)</option>
+                                <option value="alquilar">En Alquiler (VIP)</option>
+                            </select>
+                        </div>
+
+                        <!-- Filtro Tipo de Propiedad -->
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-700 mb-1">Tipo de Inmueble</label>
+                            <select id="filter-type" onchange="filterProperties()" class="w-full bg-white border border-beige-300 rounded-xl px-3.5 py-2.5 text-xs font-medium focus:outline-none focus:border-ruby-800 shadow-sm">
+                                <option value="all">Todos los tipos</option>
+                                <option value="apartamento">Apartamentos</option>
+                                <option value="villa">Villas de Lujo</option>
+                                <option value="casa">Casas & Mansiones</option>
+                                <option value="local">Locales Comerciales</option>
+                                <option value="penthouse">Penthouses Exclusive</option>
+                            </select>
+                        </div>
+
+                        <!-- Filtro Presupuesto Máximo -->
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-700 mb-1">Presupuesto Máximo ($ USD)</label>
+                            <input type="number" id="filter-max-price" oninput="filterProperties()" placeholder="Ej: 2500000" class="w-full bg-white border border-beige-300 rounded-xl px-3.5 py-2.5 text-xs font-medium focus:outline-none focus:border-ruby-800 shadow-sm">
+                        </div>
+
+                        <!-- Botón Limpiar -->
+                        <div class="flex items-end">
+                            <button onclick="resetFilters()" class="w-full py-2.5 bg-beige-200 hover:bg-beige-300 text-gray-700 text-xs font-bold rounded-xl uppercase tracking-wider transition border border-beige-300 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-arrows-rotate"></i>
+                                <span>Restablecer Filtros</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GRID DE PROPIEDADES MARKETPLACE -->
+                <div id="properties-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Renderizado dinámico vía JavaScript -->
+                </div>
+
+                <!-- MENSAJE SIN RESULTADOS -->
+                <div id="no-results" class="hidden text-center py-16 bg-white rounded-3xl border border-beige-300 shadow-sm">
+                    <div class="w-16 h-16 rounded-full bg-beige-200 text-ruby-800 mx-auto flex items-center justify-center text-2xl mb-4">
+                        <i class="fa-solid fa-house-circle-xmark"></i>
+                    </div>
+                    <h3 class="font-serif-luxury font-bold text-xl text-gray-900 mb-2">No se encontraron propiedades</h3>
+                    <p class="text-xs text-gray-500 max-w-md mx-auto mb-6">No hay resultados que coincidan exactamente con sus criterios de búsqueda. Intente ajustando el presupuesto o tipo de propiedad.</p>
+                    <button onclick="resetFilters()" class="px-6 py-2.5 bg-ruby-800 text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow">Ver todo el catálogo</button>
+                </div>
+            </section>
+
+            <!-- SECCIÓN VENDER MI PROPIEDAD -->
+            <section id="vender" class="hidden py-16 bg-beige-200/50 border-t border-b border-beige-300/80">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6">
+                    <div class="text-center mb-10">
+                        <span class="text-xs font-bold text-ruby-800 uppercase tracking-widest">Consignación Inmobiliaria</span>
+                        <h2 class="font-serif-luxury text-3xl sm:text-4xl font-bold text-gray-900 mt-1">¿Desea Vender o Alquilar su Propiedad?</h2>
+                        <p class="text-xs text-gray-600 mt-2 max-w-xl mx-auto font-light">
+                            Ofrecemos posicionamiento exclusivo ante nuestra red VIP de compradores verificados. Complete la información y nos pondremos en contacto confidencial con usted.
+                        </p>
+                    </div>
+
+                    <div class="glass-card p-6 sm:p-10 rounded-3xl shadow-luxury border border-beige-300">
+                        <form onsubmit="submitConsignForm(event)" class="space-y-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Nombre Completo *</label>
+                                    <input type="text" id="sell-name" required placeholder="Ej: Carlos Mendoza" class="w-full bg-white border border-beige-300 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-ruby-800 shadow-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Teléfono de Contacto *</label>
+                                    <input type="tel" id="sell-phone" required placeholder="Ej: +58 414 1234567" class="w-full bg-white border border-beige-300 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-ruby-800 shadow-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Tipo de Propiedad *</label>
+                                    <select id="sell-type" class="w-full bg-white border border-beige-300 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-ruby-800 shadow-sm">
+                                        <option value="Villa">Villa de Lujo</option>
+                                        <option value="Apartamento">Apartamento / Penthouse</option>
+                                        <option value="Casa">Casa / Mansión</option>
+                                        <option value="Local Comercial">Local Comercial Prime</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Ubicación de la Propiedad *</label>
+                                    <input type="text" id="sell-location" required placeholder="Ej: Las Villas, Lechería" class="w-full bg-white border border-beige-300 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-ruby-800 shadow-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Precio Estimado ($ USD)</label>
+                                    <input type="number" id="sell-price" placeholder="Ej: 1500000" class="w-full bg-white border border-beige-300 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-ruby-800 shadow-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Modalidad Deseada</label>
+                                    <select id="sell-intent" class="w-full bg-white border border-beige-300 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-ruby-800 shadow-sm">
+                                        <option value="Venta">Vender mi propiedad</option>
+                                        <option value="Alquiler VIP">Alquilar mi propiedad</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Detalles / Características Principales</label>
+                                <textarea id="sell-details" rows="4" placeholder="Describa metros cuadrados, número de habitaciones, amenidades (muelle, piscina, domótica) o cualquier detalle relevante." class="w-full bg-white border border-beige-300 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-ruby-800 shadow-sm"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-4 ruby-gradient-bg hover:bg-ruby-900 text-white rounded-xl font-bold text-xs uppercase tracking-widest shadow-ruby-glow transition flex items-center justify-center space-x-2 border border-gold-500/30">
+                                <i class="fa-brands fa-whatsapp text-lg text-gold-300"></i>
+                                <span>Enviar Solicitud Directa a Freddy</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN SOBRE NOSOTROS -->
+            <section id="nosotros" class="hidden py-16 max-w-5xl mx-auto px-4 sm:px-6">
+                <div class="glass-card p-8 sm:p-12 rounded-3xl shadow-luxury border border-beige-300 text-center relative overflow-hidden">
+                    <div class="w-20 h-20 rounded-full ruby-gradient-bg text-white font-serif-luxury font-bold text-3xl mx-auto flex items-center justify-center mb-6 shadow-xl border-2 border-gold-500/50">
+                        FR
+                    </div>
+
+                    <h2 class="font-serif-luxury text-3xl font-bold text-gray-900 mb-2" id="dyn-broker-name">FREDDY REFERENTE</h2>
+                    <p class="text-xs text-ruby-800 font-bold uppercase tracking-widest mb-6">Exclusividad & Brokerage de Lujo</p>
+
+                    <blockquote id="dyn-broker-bio" class="font-serif-luxury italic text-gray-700 text-lg sm:text-xl max-w-2xl mx-auto mb-8 leading-relaxed">
+                        "Conectamos a nuestros distinguidos clientes con activos inmobiliarios de alto valor patrimonial y excelente retorno."
+                    </blockquote>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-6 border-t border-beige-300 text-left">
+                        <div class="p-4 bg-white rounded-2xl border border-beige-300">
+                            <i class="fa-solid fa-shield-halved text-ruby-800 text-xl mb-2"></i>
+                            <h4 class="font-bold text-xs uppercase text-gray-900 mb-1">Confidencialidad</h4>
+                            <p class="text-[11px] text-gray-500">Manejo estricto y discreto de información patrimonial.</p>
+                        </div>
+                        <div class="p-4 bg-white rounded-2xl border border-beige-300">
+                            <i class="fa-solid fa-gem text-ruby-800 text-xl mb-2"></i>
+                            <h4 class="font-bold text-xs uppercase text-gray-900 mb-1">Portafolio Prime</h4>
+                            <p class="text-[11px] text-gray-500">Solo propiedades minuciosamente curadas e inspeccionadas.</p>
+                        </div>
+                        <div class="p-4 bg-white rounded-2xl border border-beige-300">
+                            <i class="fa-solid fa-comments-dollar text-ruby-800 text-xl mb-2"></i>
+                            <h4 class="font-bold text-xs uppercase text-gray-900 mb-1">Asesoría Integral</h4>
+                            <p class="text-[11px] text-gray-500">Acompañamiento legal, financiero y de valoración de mercado.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- FOOTER ELEGANTE RUBÍ & BEIGE -->
+        <footer class="bg-gray-950 text-beige-200 border-t border-ruby-900/40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                    <div class="md:col-span-2 space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-ruby-800 flex items-center justify-center text-white font-serif-luxury font-bold text-xl shadow-md border border-ruby-600">
+                                FR
+                            </div>
+                            <div>
+                                <h3 class="font-serif-luxury font-bold text-lg text-white tracking-widest">FREDDY REFERENTE</h3>
+                                <p class="text-[10px] text-ruby-400 font-mono tracking-wider uppercase">Real Estate Luxury</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 leading-relaxed max-w-md">
+                            Intermediación boutique de propiedades inmobiliarias de alto valor patrimonial. Discreción, confidencialidad y excelencia profesional.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="font-serif-luxury font-bold text-sm text-white mb-4 uppercase tracking-wider">Enlaces Rápidos</h4>
+                        <ul class="space-y-2 text-xs text-gray-400">
+                            <li><a href="#inicio" onclick="showSection('hero')" class="hover:text-ruby-400 transition">Inicio</a></li>
+                            <li><a href="#catalogo" onclick="navigateToCatalog('all')" class="hover:text-ruby-400 transition">Colección Privada</a></li>
+                            <li><a href="#vender" onclick="showSection('vender')" class="hover:text-ruby-400 transition">Vender Propiedad</a></li>
+                            <li><a href="#nosotros" onclick="showSection('nosotros')" class="hover:text-ruby-400 transition">Sobre Nosotros</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="font-serif-luxury font-bold text-sm text-white mb-4 uppercase tracking-wider">Contacto Directo</h4>
+                        <ul class="space-y-3 text-xs text-gray-400">
+                            <li id="ftr-phone" class="flex items-center space-x-2">
+                                <i class="fa-brands fa-whatsapp text-ruby-500"></i>
+                                <span>+584120000000</span>
+                            </li>
+                            <li id="ftr-email" class="flex items-center space-x-2">
+                                <i class="fa-solid fa-envelope text-ruby-500"></i>
+                                <span>contacto@freddy.referente.com</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="fa-solid fa-globe text-ruby-500"></i>
+                                <span>freddy.referente.com</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-900 pt-6 flex flex-col sm:flex-row justify-between items-center text-[11px] text-gray-500">
+                    <p>© 2026 FREDDY REFERENTE. Todos los derechos reservados.</p>
+                    <button onclick="requestAdminAccess()" class="mt-2 sm:mt-0 text-ruby-400 hover:text-white underline">Acceder al Panel Admin</button>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- MODAL DE AUTENTICACIÓN / CONTRASEÑA ADMIN -->
+    <div id="modal-auth" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl border border-beige-300 p-6 sm:p-8">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 rounded-full bg-ruby-800 text-white mx-auto flex items-center justify-center text-2xl mb-3 shadow-md">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h3 class="font-serif-luxury font-bold text-2xl text-gray-900">Acceso Administrativo</h3>
+                <p class="text-xs text-gray-500 mt-1">Ingrese la clave de seguridad para gestionar el sitio y publicaciones.</p>
+                <div class="mt-2 inline-block px-3 py-1 bg-beige-200 text-ruby-900 rounded-full text-[11px] font-mono font-semibold">
+                    Clave por defecto: <span class="text-ruby-800">freddy2026</span>
+                </div>
+            </div>
+
+            <form onsubmit="verifyAdminPassword(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Contraseña</label>
+                    <input type="password" id="auth-password" required placeholder="••••••••" class="w-full bg-beige-50 border border-beige-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-ruby-800">
+                    <p id="auth-error" class="hidden text-xs text-rose-600 mt-1 font-semibold">
+                        <i class="fa-solid fa-circle-exclamation"></i> Contraseña incorrecta. Intente nuevamente.
+                    </p>
+                </div>
+
+                <div class="flex space-x-3 pt-2">
+                    <button type="button" onclick="closeAuthModal()" class="w-1/2 py-3 bg-beige-200 text-gray-700 text-xs font-semibold rounded-xl uppercase">Cancelar</button>
+                    <button type="submit" class="w-1/2 py-3 bg-ruby-800 hover:bg-ruby-900 text-white text-xs font-bold rounded-xl uppercase shadow-md">Ingresar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL COMPLETO DE ADMINISTRACIÓN -->
+    <div id="modal-admin" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-4xl w-full overflow-hidden shadow-2xl border border-beige-300 relative my-8">
+            
+            <!-- Encabezado Modal Admin -->
+            <div class="bg-ruby-900 text-white px-6 py-4 flex justify-between items-center border-b border-ruby-800">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-sliders text-gold-400 text-lg"></i>
+                    <h3 class="font-serif-luxury font-bold text-lg">Panel de Administración & Gestor de Contenido</h3>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="logoutAdmin()" class="text-xs bg-ruby-800 hover:bg-ruby-700 px-3 py-1.5 rounded-lg border border-ruby-600 flex items-center space-x-1">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Cerrar Sesión</span>
+                    </button>
+                    <button onclick="toggleAdminModal()" class="text-beige-200 hover:text-white">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabs de navegación Admin -->
+            <div class="bg-beige-100 px-6 border-b border-beige-300 flex space-x-4 text-xs font-semibold">
+                <button onclick="switchAdminTab('profile')" id="tab-btn-profile" class="py-3 text-ruby-800 border-b-2 border-ruby-800">
+                    <i class="fa-solid fa-user-pen mr-1"></i> Perfil & Sitio Web
+                </button>
+                <button onclick="switchAdminTab('properties')" id="tab-btn-properties" class="py-3 text-gray-600 hover:text-ruby-800">
+                    <i class="fa-solid fa-house-laptop mr-1"></i> Gestionar Publicaciones (<span id="admin-prop-count">0</span>)
+                </button>
+            </div>
+
+            <!-- Contenido de las Tabs -->
+            <div class="p-6 sm:p-8 max-h-[70vh] overflow-y-auto">
+                
+                <!-- TAB 1: EDITAR INFORMACIÓN PERSONAL Y CONFIGURACIÓN GLOBAL -->
+                <div id="admin-tab-profile" class="space-y-6">
+                    <div>
+                        <h4 class="font-serif-luxury font-bold text-lg text-gray-900 mb-4 border-b border-beige-200 pb-2">Información de Contacto y Broker</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Nombre Comercial / Firma</label>
+                                <input type="text" id="adm-name" class="w-full bg-beige-50 border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Teléfono WhatsApp (Ej: +584120000000)</label>
+                                <input type="text" id="adm-phone" class="w-full bg-beige-50 border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Correo Electrónico</label>
+                                <input type="email" id="adm-email" class="w-full bg-beige-50 border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Eslogan Corto</label>
+                                <input type="text" id="adm-sub" class="w-full bg-beige-50 border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-serif-luxury font-bold text-lg text-gray-900 mb-4 border-b border-beige-200 pb-2">Textos Principales de la Página</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Título Principal (Hero)</label>
+                                <input type="text" id="adm-hero-title" class="w-full bg-beige-50 border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Descripción Principal (Hero)</label>
+                                <textarea id="adm-hero-desc" rows="2" class="w-full bg-beige-50 border border-beige-300 rounded-lg px-3 py-2 text-sm"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Biografía de Freddy / Mensaje Corporativo</label>
+                                <textarea id="adm-bio" rows="3" class="w-full bg-beige-50 border border-beige-300 rounded-lg px-3 py-2 text-sm"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: GESTIÓN DE PUBLICACIONES -->
+                <div id="admin-tab-properties" class="hidden space-y-6">
+                    
+                    <!-- FORMULARIO NUEVA / EDITAR PROPIEDAD -->
+                    <div class="bg-beige-50 p-5 rounded-xl border border-beige-300">
+                        <h4 id="form-prop-heading" class="font-serif-luxury font-bold text-base text-ruby-800 mb-3">
+                            <i class="fa-solid fa-plus-circle mr-1"></i> Publicar Nueva Propiedad
+                        </h4>
+                        
+                        <input type="hidden" id="edit-prop-id" value="">
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Título de la Publicación</label>
+                                <input type="text" id="prop-title" placeholder="Ej: Penthouse Minimalista de Doble Altura" class="w-full bg-white border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Tipo de Propiedad</label>
+                                <select id="prop-type" class="w-full bg-white border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                                    <option value="apartamento">Apartamento</option>
+                                    <option value="villa">Villa de Lujo</option>
+                                    <option value="casa">Casa / Mansión</option>
+                                    <option value="local">Local Comercial Prime</option>
+                                    <option value="penthouse">Penthouse Exclusive</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Operación</label>
+                                <select id="prop-intent" class="w-full bg-white border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                                    <option value="comprar">En Venta (Comprar)</option>
+                                    <option value="alquilar">En Alquiler (VIP)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Precio ($ USD)</label>
+                                <input type="number" id="prop-price" placeholder="Ej: 1200000" class="w-full bg-white border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Ubicación</label>
+                                <input type="text" id="prop-location" placeholder="Ej: Las Villas, Lechería" class="w-full bg-white border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Superficie (m²)</label>
+                                <input type="text" id="prop-area" placeholder="Ej: 450 m²" class="w-full bg-white border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Habitaciones / Baños</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="number" id="prop-beds" placeholder="Hab" class="w-full bg-white border border-beige-300 rounded-lg px-2 py-2 text-sm">
+                                    <input type="number" id="prop-baths" placeholder="Baños" class="w-full bg-white border border-beige-300 rounded-lg px-2 py-2 text-sm">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Amenidad Destacada</label>
+                                <input type="text" id="prop-amenity" placeholder="Ej: Muelle / Infinity Pool" class="w-full bg-white border border-beige-300 rounded-lg px-3 py-2 text-sm">
+                            </div>
+
+                            <div class="sm:col-span-3 bg-white p-4 rounded-lg border border-beige-300">
+                                <label class="block text-xs font-bold uppercase text-ruby-800 mb-1">
+                                    <i class="fa-solid fa-file-image mr-1"></i> Seleccionar Fotografía (.PNG o .JPG)
+                                </label>
+                                <input type="file" id="prop-file-input" accept="image/png, image/jpeg" onchange="handleImageFileSelect(event)" class="block w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-ruby-800 file:text-white hover:file:bg-ruby-900 cursor-pointer">
+                                
+                                <div id="image-preview-container" class="mt-3 hidden flex items-center space-x-4">
+                                    <img id="image-preview" src="" alt="Previsualización" class="w-20 h-20 object-cover rounded-lg border border-beige-300">
+                                    <span class="text-xs text-emerald-700 font-semibold"><i class="fa-solid fa-circle-check"></i> Fotografía procesada correctamente</span>
+                                </div>
+                            </div>
+
+                            <div class="sm:col-span-3">
+                                <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Descripción Detallada</label>
+                                <textarea id="prop-desc" rows="3" placeholder="Escriba todos los detalles exclusivos..." class="w-full bg-white border border-beige-300 rounded-lg px-3 py-2 text-sm"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- BOTONES DEDICADOS PARA PROCESAR Y GUARDAR PUBLICACIÓN -->
+                        <div class="flex justify-end space-x-3 pt-2 border-t border-beige-200">
+                            <button onclick="clearPropForm()" type="button" class="px-4 py-2 bg-beige-200 text-gray-700 text-xs rounded-lg font-semibold uppercase hover:bg-beige-300 transition">Cancelar</button>
+                            <button onclick="savePropertyFromAdmin()" type="button" class="px-5 py-2.5 bg-ruby-800 hover:bg-ruby-900 text-white text-xs rounded-lg font-bold uppercase tracking-wider shadow">
+                                <i class="fa-solid fa-plus mr-1"></i> Añadir / Procesar Publicación
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- BOTÓN DEDICADO Y EXPLICITO PARA GUARDAR PUBLICACIONES -->
+                    <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 flex flex-col sm:flex-row justify-between items-center gap-3">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-cloud-arrow-up text-emerald-700 text-xl"></i>
+                            <div>
+                                <h5 class="font-bold text-emerald-900 text-xs uppercase">Guardar Modificaciones de Publicaciones</h5>
+                                <p class="text-[11px] text-emerald-700">Asegure y conserve las altas, ediciones y eliminaciones en el sistema.</p>
+                            </div>
+                        </div>
+                        <button onclick="savePropertyChangesExplicitly()" type="button" class="w-full sm:w-auto px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold uppercase tracking-wider shadow flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-floppy-disk text-sm"></i>
+                            <span>Guardar Cambios de Publicaciones</span>
+                        </button>
+                    </div>
+
+                    <!-- LISTA DE PUBLICACIONES EXISTENTES -->
+                    <div>
+                        <h4 class="font-serif-luxury font-bold text-base text-gray-900 mb-3">Publicaciones Actuales</h4>
+                        <div id="admin-prop-list" class="space-y-3">
+                            <!-- Renderizado con JS -->
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- BOTÓN PRINCIPAL GLOBAL DE GUARDADO -->
+            <div class="bg-beige-100 px-6 py-4 border-t border-beige-300 flex justify-between items-center">
+                <span class="text-xs text-gray-500 italic">Los cambios guardados persistirán en su navegador.</span>
+                <button onclick="saveAllGlobalChanges()" class="px-6 py-3 bg-ruby-800 hover:bg-ruby-900 text-white font-bold text-xs rounded-xl uppercase tracking-wider shadow-md flex items-center gap-2">
+                    <i class="fa-solid fa-floppy-disk text-base"></i>
+                    <span>GUARDAR TODO Y SALIR</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- NOTIFICACIÓN TOAST FLOTANTE -->
+    <div id="toast-notification" class="fixed bottom-5 right-5 z-50 hidden bg-emerald-800 text-white px-5 py-3 rounded-xl shadow-2xl border border-emerald-600 flex items-center space-x-3 transition-all duration-300">
+        <i class="fa-solid fa-circle-check text-xl text-emerald-300"></i>
+        <span id="toast-message" class="text-xs font-bold uppercase tracking-wider">Cambios guardados con éxito</span>
+    </div>
+
+    <!-- MODAL DETALLE DE PROPIEDAD DE ALTA GAMA -->
+    <div id="modal-property" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl border border-beige-300 relative my-8">
+            <button onclick="closePropertyModal()" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/60 text-white hover:bg-ruby-800 flex items-center justify-center transition shadow-md">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="relative h-72 sm:h-96 bg-gray-900">
+                <img id="modal-prop-img" src="" alt="Propiedad" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent to-transparent"></div>
+                
+                <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+                    <div>
+                        <span id="modal-prop-type" class="px-3 py-1 bg-gold-500 text-gray-950 font-bold text-[10px] rounded-full uppercase tracking-widest shadow-md">
+                            TIPO
+                        </span>
+                        <h3 id="modal-prop-title" class="font-serif-luxury font-bold text-2xl sm:text-3xl text-white mt-2 drop-shadow-md">Título</h3>
+                        <p id="modal-prop-location" class="text-xs text-beige-300 flex items-center mt-1">
+                            <i class="fa-solid fa-location-dot text-gold-400 mr-1.5"></i> Ubicación
+                        </p>
+                    </div>
+                    <div id="modal-prop-price" class="text-xl sm:text-2xl font-serif-luxury font-bold text-white bg-ruby-900/90 border border-gold-500/30 px-4 py-2 rounded-2xl shadow-lg">
+                        $0 USD
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 sm:p-8 space-y-6">
+                <!-- Amenidades principales -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4 px-2 bg-beige-100 rounded-2xl border border-beige-300/80 text-center text-xs font-semibold text-gray-700">
+                    <div><i class="fa-solid fa-bed text-ruby-800 text-lg mb-1 block"></i> <span id="modal-prop-beds">0</span> Hab.</div>
+                    <div><i class="fa-solid fa-bath text-ruby-800 text-lg mb-1 block"></i> <span id="modal-prop-baths">0</span> Baños</div>
+                    <div><i class="fa-solid fa-ruler-combined text-ruby-800 text-lg mb-1 block"></i> <span id="modal-prop-area">0 m²</span></div>
+                    <div><i class="fa-solid fa-star text-gold-500 text-lg mb-1 block"></i> <span id="modal-prop-amenity" class="truncate block">VIP</span></div>
+                </div>
+
+                <div>
+                    <h4 class="font-serif-luxury font-bold text-lg text-gray-900 mb-2">Descripción Exclusiva</h4>
+                    <p id="modal-prop-desc" class="text-xs sm:text-sm text-gray-600 leading-relaxed font-light">Descripción de la propiedad.</p>
+                </div>
+
+                <div class="pt-4 border-t border-beige-200 flex flex-col sm:flex-row gap-3">
+                    <button onclick="closePropertyModal()" class="w-full sm:w-1/3 py-3 bg-beige-200 hover:bg-beige-300 text-gray-700 text-xs font-bold rounded-xl uppercase tracking-wider">
+                        Cerrar
+                    </button>
+                    <a id="modal-prop-wa-btn" href="#" target="_blank" class="w-full sm:w-2/3 py-3 ruby-gradient-bg hover:bg-ruby-900 text-white rounded-xl text-xs font-bold uppercase tracking-widest shadow-ruby-glow flex items-center justify-center space-x-2 border border-gold-500/30">
+                        <i class="fa-brands fa-whatsapp text-lg text-gold-300"></i>
+                        <span>Solicitar Visita / Contactar a Freddy</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT PRINCIPAL CON ESTÉTICA MEJORADA Y SEGURO DE FUNCIONES -->
+    <script>
+        const ADMIN_PASSWORD_DEFAULT = "freddy2026";
+        let isAdminLoggedIn = false;
+
+        const defaultProfile = {
+            name: "FREDDY REFERENTE",
+            sub: "Real Estate Luxury",
+            phone: "+584120000000",
+            email: "contacto@freddy.referente.com",
+            heroTitle: "Encuentre el espacio exclusivo que merece su estilo de vida.",
+            heroDesc: "Seleccionamos minuciosamente villas paradisíacas, apartamentos penthouse, casas y locales comerciales prime para los clientes más exigentes.",
+            bio: "Conectamos a nuestros distinguidos clientes con activos inmobiliarios de alto valor patrimonial y excelente retorno."
+        };
+
+        const defaultProperties = [
+            {
+                id: 1,
+                title: "Apartamento Luxury Panoramic Sky",
+                type: "apartamento",
+                intent: "comprar",
+                price: 950000,
+                formattedPrice: "$950,000 USD",
+                location: "Marina Redonda, Lechería",
+                area: "320 m²",
+                beds: 3,
+                baths: 4,
+                amenity: "Vista al Mar + Domótica",
+                image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1000&q=80",
+                description: "Apartamento exclusivo de diseño ultramoderno con acabados de cuarzo, ventanales de piso a techo y terraza integrada."
+            },
+            {
+                id: 2,
+                title: "Villa Rubí Royal & Resort",
+                type: "villa",
+                intent: "comprar",
+                price: 4800000,
+                formattedPrice: "$4,800,000 USD",
+                location: "Las Villas, Lechería",
+                area: "1,200 m²",
+                beds: 6,
+                baths: 8,
+                amenity: "Muelle Privado + Helipuerto",
+                image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1000&q=80",
+                description: "Espectacular Villa con muelle privado para yates de hasta 80 pies y piscina infinity climatizada."
+            },
+            {
+                id: 3,
+                title: "Penthouse Minimalist Sky Horizon",
+                type: "penthouse",
+                intent: "comprar",
+                price: 2200000,
+                formattedPrice: "$2,200,000 USD",
+                location: "Distrito Financiero Prime",
+                area: "650 m²",
+                beds: 4,
+                baths: 5,
+                amenity: "Piscina Privada en Rooftop",
+                image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1000&q=80",
+                description: "Penthouse dúplex con vistas panorámicas de 360 grados, cava climatizada y ascensor privado."
+            },
+            {
+                id: 4,
+                title: "Residencia Exclusiva Beige Signature",
+                type: "casa",
+                intent: "alquilar",
+                price: 15000,
+                formattedPrice: "$15,000 USD / mes",
+                location: "Country Club Heights",
+                area: "850 m²",
+                beds: 5,
+                baths: 6,
+                amenity: "Spa + Casa de Huéspedes",
+                image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1000&q=80",
+                description: "Mansión de estilo mediterráneo contemporáneo para estancias de alto perfil."
+            },
+            {
+                id: 5,
+                title: "Local Comercial Flagship Store Luxury",
+                type: "local",
+                intent: "comprar",
+                price: 3100000,
+                formattedPrice: "$3,100,000 USD",
+                location: "Avenida Comercial Prime",
+                area: "480 m²",
+                beds: 0,
+                baths: 4,
+                amenity: "Escaparate de Doble Altura",
+                image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1000&q=80",
+                description: "Espacio comercial icónico ideal para tiendas boutique internacional o firmas de alta gama."
+            }
+        ];
+
+        let currentProfile = JSON.parse(localStorage.getItem('freddy_profile')) || defaultProfile;
+        let propertiesData = JSON.parse(localStorage.getItem('freddy_properties')) || defaultProperties;
+        let currentImageBase64 = "";
+
+        window.onload = function() {
+            applyProfileToUI();
+            renderProperties(propertiesData);
+        };
+
+        // GESTIÓN DE ACCESO CON CONTRASEÑA
+        function requestAdminAccess() {
+            if (isAdminLoggedIn) {
+                toggleAdminModal();
+            } else {
+                document.getElementById('auth-password').value = "";
+                document.getElementById('auth-error').classList.add('hidden');
+                document.getElementById('modal-auth').classList.remove('hidden');
+            }
+        }
+
+        function verifyAdminPassword(e) {
+            e.preventDefault();
+            const pass = document.getElementById('auth-password').value;
+            if (pass === ADMIN_PASSWORD_DEFAULT) {
+                isAdminLoggedIn = true;
+                closeAuthModal();
+                toggleAdminModal();
+                showToast("Acceso concedido como Administrador");
+            } else {
+                document.getElementById('auth-error').classList.remove('hidden');
+            }
+        }
+
+        function closeAuthModal() {
+            document.getElementById('modal-auth').classList.add('hidden');
+        }
+
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            toggleAdminModal();
+            showToast("Sesión de administración cerrada");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast-notification');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        function applyProfileToUI() {
+            const setFieldText = (id, text) => {
+                const el = document.getElementById(id);
+                if (el) el.innerText = text;
+            };
+
+            const setFieldValue = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.value = val;
+            };
+
+            setFieldText('dyn-brand-name', currentProfile.name);
+            setFieldText('dyn-brand-sub', currentProfile.sub);
+            setFieldText('dyn-hero-title', currentProfile.heroTitle);
+            setFieldText('dyn-hero-desc', currentProfile.heroDesc);
+            setFieldText('dyn-broker-name', currentProfile.name);
+            setFieldText('dyn-broker-email', currentProfile.email);
+            setFieldText('dyn-broker-phone', currentProfile.phone);
+            setFieldText('dyn-broker-bio', `"${currentProfile.bio}"`);
+            
+            const cleanPhone = currentProfile.phone.replace(/\+/g, '').replace(/\s/g, '');
+            const defaultMsg = encodeURIComponent(`Hola ${currentProfile.name}, quisiera información sobre sus servicios de bienes raíces de lujo.`);
+            
+            const hdrBtn = document.getElementById('hdr-whatsapp-btn');
+            if (hdrBtn) hdrBtn.href = `https://wa.me/${cleanPhone}?text=${defaultMsg}`;
+
+            const ftrEmail = document.getElementById('ftr-email');
+            if (ftrEmail) ftrEmail.innerHTML = `<i class="fa-solid fa-envelope text-ruby-500 mr-2"></i> ${currentProfile.email}`;
+
+            const ftrPhone = document.getElementById('ftr-phone');
+            if (ftrPhone) ftrPhone.innerHTML = `<i class="fa-brands fa-whatsapp text-ruby-500 mr-2"></i> ${currentProfile.phone}`;
+
+            setFieldValue('adm-name', currentProfile.name);
+            setFieldValue('adm-sub', currentProfile.sub);
+            setFieldValue('adm-phone', currentProfile.phone);
+            setFieldValue('adm-email', currentProfile.email);
+            setFieldValue('adm-hero-title', currentProfile.heroTitle);
+            setFieldValue('adm-hero-desc', currentProfile.heroDesc);
+            setFieldValue('adm-bio', currentProfile.bio);
+        }
+
+        function renderProperties(items) {
+            const grid = document.getElementById('properties-grid');
+            const noResults = document.getElementById('no-results');
+            
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                if (noResults) noResults.classList.remove('hidden');
+                return;
+            } else {
+                if (noResults) noResults.classList.add('hidden');
+            }
+
+            items.forEach(prop => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-3xl overflow-hidden shadow-luxury border border-beige-300 flex flex-col hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group";
+                
+                const displayType = prop.type ? prop.type.toUpperCase() : 'PROPIEDAD';
+                const displayIntent = prop.intent === 'alquilar' ? 'ALQUILER VIP' : 'EN VENTA';
+                const tagColor = prop.intent === 'alquilar' ? 'bg-amber-800' : 'ruby-gradient-bg';
+
+                card.innerHTML = `
+                    <div class="relative h-64 overflow-hidden bg-gray-900">
+                        <img src="${prop.image || 'https://placehold.co/800x600/800020/ffffff?text=Luxury+Real+Estate'}" alt="${prop.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.src='https://placehold.co/800x600/800020/ffffff?text=Freddy+Referente'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
+                        <div class="absolute top-4 left-4 flex gap-2">
+                            <span class="${tagColor} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-md border border-white/20">
+                                ${displayIntent}
+                            </span>
+                            <span class="bg-gray-950/80 backdrop-blur-md text-gold-400 border border-gold-500/30 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">
+                                ${displayType}
+                            </span>
+                        </div>
+                        <div class="absolute bottom-4 right-4 bg-ruby-900/90 text-white font-serif-luxury font-bold text-sm px-4 py-1.5 rounded-xl border border-gold-500/40 shadow-lg backdrop-blur-sm">
+                            ${prop.formattedPrice || '$' + Number(prop.price).toLocaleString('en-US') + ' USD'}
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="text-xs text-ruby-800 font-bold mb-1 flex items-center tracking-wide">
+                                <i class="fa-solid fa-location-dot text-gold-500 mr-1.5"></i> ${prop.location}
+                            </div>
+                            <h3 class="font-serif-luxury font-bold text-lg text-gray-900 mb-2 line-clamp-1 group-hover:text-ruby-800 transition">${prop.title}</h3>
+                            <p class="text-xs text-gray-500 mb-4 line-clamp-2 font-light leading-relaxed">${prop.description}</p>
+                        </div>
+
+                        <div>
+                            <div class="grid grid-cols-3 gap-2 py-3 border-y border-beige-200/80 text-center text-[11px] font-semibold text-gray-700 mb-5 bg-beige-50 rounded-xl">
+                                <div><i class="fa-solid fa-bed text-ruby-800 mr-1"></i> ${prop.beds} Hab</div>
+                                <div><i class="fa-solid fa-bath text-ruby-800 mr-1"></i> ${prop.baths} Baños</div>
+                                <div><i class="fa-solid fa-ruler-combined text-ruby-800 mr-1"></i> ${prop.area}</div>
+                            </div>
+                            
+                            <div class="flex gap-2">
+                                <button onclick="openPropertyModal(${prop.id})" class="flex-1 py-3 bg-beige-200 hover:bg-beige-300 text-gray-800 text-xs font-bold rounded-xl uppercase tracking-wider transition">
+                                    Detalles
+                                </button>
+                                <button onclick="contactPropertyWhatsApp(${prop.id})" class="flex-1 py-3 ruby-gradient-bg hover:bg-ruby-900 text-white text-xs font-bold rounded-xl uppercase tracking-wider transition flex items-center justify-center gap-1 shadow-ruby-glow border border-gold-500/30">
+                                    <i class="fa-brands fa-whatsapp text-gold-300"></i> Contactar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function resetFilters() {
+            document.getElementById('filter-intent').value = 'all';
+            document.getElementById('filter-type').value = 'all';
+            document.getElementById('filter-max-price').value = '';
+            filterProperties();
+        }
+
+        // CONTROL DE SECCIONES Y CATÁLOGO
+        function showSection(sectionId) {
+            ['hero', 'vender', 'nosotros'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
+            
+            const target = document.getElementById(sectionId);
+            if (target) {
+                target.classList.remove('hidden');
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function navigateToCatalog(type) {
+            showSection('hero');
+            const typeFilter = document.getElementById('filter-type');
+            const intentFilter = document.getElementById('filter-intent');
+            
+            if (type === 'comprar' || type === 'alquilar') {
+                if (intentFilter) intentFilter.value = type;
+                if (typeFilter) typeFilter.value = 'all';
+            } else if (typeFilter) {
+                typeFilter.value = type;
+            }
+
+            filterProperties();
+            const catalog = document.getElementById('catalogo');
+            if (catalog) catalog.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function filterProperties() {
+            const intent = document.getElementById('filter-intent')?.value || 'all';
+            const type = document.getElementById('filter-type')?.value || 'all';
+            const maxBudget = parseFloat(document.getElementById('filter-max-price')?.value) || Infinity;
+
+            const filtered = propertiesData.filter(item => {
+                const matchesIntent = (intent === 'all') || (item.intent === intent);
+                const matchesType = (type === 'all') || (item.type === type);
+                const matchesBudget = Number(item.price) <= maxBudget;
+                return matchesIntent && matchesType && matchesBudget;
+            });
+
+            renderProperties(filtered);
+        }
+
+        // CARGA DE FOTOGRAFÍA EN ADMIN (PNG/JPG EN BASE64)
+        function handleImageFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (!['image/png', 'image/jpeg', 'image/jpg'].includes(file.type)) {
+                alert("Por favor seleccione un archivo en formato .PNG o .JPG");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentImageBase64 = e.target.result;
+                const preview = document.getElementById('image-preview');
+                const container = document.getElementById('image-preview-container');
+                if (preview && container) {
+                    preview.src = currentImageBase64;
+                    container.classList.remove('hidden');
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // CREAR / EDITAR PUBLICACIÓN
+        function savePropertyFromAdmin() {
+            const idInput = document.getElementById('edit-prop-id').value;
+            const title = document.getElementById('prop-title').value.trim();
+            const type = document.getElementById('prop-type').value;
+            const intent = document.getElementById('prop-intent').value;
+            const price = parseFloat(document.getElementById('prop-price').value) || 0;
+            const location = document.getElementById('prop-location').value.trim();
+            const area = document.getElementById('prop-area').value.trim();
+            const beds = parseInt(document.getElementById('prop-beds').value) || 0;
+            const baths = parseInt(document.getElementById('prop-baths').value) || 0;
+            const amenity = document.getElementById('prop-amenity').value.trim();
+            const desc = document.getElementById('prop-desc').value.trim();
+
+            if (!title || !location || price <= 0) {
+                alert("Por favor ingrese al menos el Título, Ubicación y un Precio válido.");
+                return;
+            }
+
+            const formattedPrice = intent === 'alquilar' ? `$${price.toLocaleString('en-US')} USD / mes` : `$${price.toLocaleString('en-US')} USD`;
+
+            if (idInput) {
+                const index = propertiesData.findIndex(p => String(p.id) === String(idInput));
+                if (index !== -1) {
+                    propertiesData[index] = {
+                        ...propertiesData[index],
+                        title, type, intent, price, formattedPrice, location, area, beds, baths, amenity,
+                        description: desc,
+                        image: currentImageBase64 || propertiesData[index].image
+                    };
+                }
+            } else {
+                const newProperty = {
+                    id: Date.now(),
+                    title, type, intent, price, formattedPrice, location, area, beds, baths, amenity,
+                    description: desc,
+                    image: currentImageBase64 || 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1000&q=80'
+                };
+                propertiesData.unshift(newProperty);
+            }
+
+            clearPropForm();
+            renderAdminPropertyList();
+            renderProperties(propertiesData);
+            showToast("Publicación procesada correctamente");
+        }
+
+        function editPropertyInAdmin(id) {
+            const prop = propertiesData.find(p => String(p.id) === String(id));
+            if (!prop) return;
+
+            document.getElementById('edit-prop-id').value = prop.id;
+            document.getElementById('prop-title').value = prop.title;
+            document.getElementById('prop-type').value = prop.type;
+            document.getElementById('prop-intent').value = prop.intent;
+            document.getElementById('prop-price').value = prop.price;
+            document.getElementById('prop-location').value = prop.location;
+            document.getElementById('prop-area').value = prop.area;
+            document.getElementById('prop-beds').value = prop.beds;
+            document.getElementById('prop-baths').value = prop.baths;
+            document.getElementById('prop-amenity').value = prop.amenity;
+            document.getElementById('prop-desc').value = prop.description;
+
+            currentImageBase64 = prop.image;
+            const preview = document.getElementById('image-preview');
+            const container = document.getElementById('image-preview-container');
+            if (preview && container && prop.image) {
+                preview.src = prop.image;
+                container.classList.remove('hidden');
+            }
+
+            document.getElementById('form-prop-heading').innerHTML = `<i class="fa-solid fa-pen-to-square mr-1"></i> Editando Propiedad #${prop.id}`;
+        }
+
+        function deletePropertyInAdmin(id) {
+            if (confirm("¿Está seguro de que desea eliminar esta publicación?")) {
+                propertiesData = propertiesData.filter(p => String(p.id) !== String(id));
+                localStorage.setItem('freddy_properties', JSON.stringify(propertiesData));
+                renderAdminPropertyList();
+                renderProperties(propertiesData);
+                showToast("Publicación eliminada exitosamente");
+            }
+        }
+
+        function clearPropForm() {
+            document.getElementById('edit-prop-id').value = "";
+            document.getElementById('prop-title').value = "";
+            document.getElementById('prop-price').value = "";
+            document.getElementById('prop-location').value = "";
+            document.getElementById('prop-area').value = "";
+            document.getElementById('prop-beds').value = "";
+            document.getElementById('prop-baths').value = "";
+            document.getElementById('prop-amenity').value = "";
+            document.getElementById('prop-desc').value = "";
+            document.getElementById('prop-file-input').value = "";
+            currentImageBase64 = "";
+            
+            const container = document.getElementById('image-preview-container');
+            if (container) container.classList.add('hidden');
+            
+            document.getElementById('form-prop-heading').innerHTML = `<i class="fa-solid fa-plus-circle mr-1"></i> Publicar Nueva Propiedad`;
+        }
+
+        function savePropertyChangesExplicitly() {
+            localStorage.setItem('freddy_properties', JSON.stringify(propertiesData));
+            showToast("Publicaciones guardadas correctamente");
+        }
+
+        function renderAdminPropertyList() {
+            const list = document.getElementById('admin-prop-list');
+            const count = document.getElementById('admin-prop-count');
+            
+            if (count) count.innerText = propertiesData.length;
+            if (!list) return;
+
+            list.innerHTML = '';
+
+            if (propertiesData.length === 0) {
+                list.innerHTML = '<p class="text-xs text-gray-500 italic">No hay publicaciones activas.</p>';
+                return;
+            }
+
+            propertiesData.forEach(p => {
+                const row = document.createElement('div');
+                row.className = "p-3 bg-white border border-beige-300 rounded-xl flex justify-between items-center text-xs shadow-sm";
+                row.innerHTML = `
+                    <div class="flex items-center space-x-3 overflow-hidden">
+                        <img src="${p.image}" class="w-10 h-10 object-cover rounded-lg border border-beige-200 flex-shrink-0" onerror="this.src='https://placehold.co/100x100/800020/ffffff?text=Ref'">
+                        <div class="truncate">
+                            <p class="font-bold text-gray-900 truncate">${p.title}</p>
+                            <p class="text-[10px] text-gray-500 uppercase">${p.type} • ${p.intent} • ${p.formattedPrice}</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2 flex-shrink-0">
+                        <button onclick="editPropertyInAdmin('${p.id}')" class="px-2.5 py-1 bg-amber-100 text-amber-800 hover:bg-amber-200 font-bold rounded-lg transition">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button onclick="deletePropertyInAdmin('${p.id}')" class="px-2.5 py-1 bg-rose-100 text-rose-800 hover:bg-rose-200 font-bold rounded-lg transition">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                list.appendChild(row);
+            });
+        }
+
+        function toggleAdminModal() {
+            const modal = document.getElementById('modal-admin');
+            if (modal) {
+                modal.classList.toggle('hidden');
+                if (!modal.classList.contains('hidden')) {
+                    renderAdminPropertyList();
+                }
+            }
+        }
+
+        function switchAdminTab(tab) {
+            const tabProf = document.getElementById('admin-tab-profile');
+            const tabProp = document.getElementById('admin-tab-properties');
+            const btnProf = document.getElementById('tab-btn-profile');
+            const btnProp = document.getElementById('tab-btn-properties');
+
+            if (tab === 'profile') {
+                tabProf.classList.remove('hidden');
+                tabProp.classList.add('hidden');
+                btnProf.className = "py-3 text-ruby-800 border-b-2 border-ruby-800 font-semibold";
+                btnProp.className = "py-3 text-gray-600 hover:text-ruby-800 font-semibold";
+            } else {
+                tabProf.classList.add('hidden');
+                tabProp.classList.remove('hidden');
+                btnProf.className = "py-3 text-gray-600 hover:text-ruby-800 font-semibold";
+                btnProp.className = "py-3 text-ruby-800 border-b-2 border-ruby-800 font-semibold";
+                renderAdminPropertyList();
+            }
+        }
+
+        function saveAllGlobalChanges() {
+            currentProfile.name = document.getElementById('adm-name').value.trim() || currentProfile.name;
+            currentProfile.sub = document.getElementById('adm-sub').value.trim() || currentProfile.sub;
+            currentProfile.phone = document.getElementById('adm-phone').value.trim() || currentProfile.phone;
+            currentProfile.email = document.getElementById('adm-email').value.trim() || currentProfile.email;
+            currentProfile.heroTitle = document.getElementById('adm-hero-title').value.trim() || currentProfile.heroTitle;
+            currentProfile.heroDesc = document.getElementById('adm-hero-desc').value.trim() || currentProfile.heroDesc;
+            currentProfile.bio = document.getElementById('adm-bio').value.trim() || currentProfile.bio;
+
+            localStorage.setItem('freddy_profile', JSON.stringify(currentProfile));
+            localStorage.setItem('freddy_properties', JSON.stringify(propertiesData));
+
+            applyProfileToUI();
+            renderProperties(propertiesData);
+            toggleAdminModal();
+            showToast("Todos los cambios guardados con éxito");
+        }
+
+        function openPropertyModal(id) {
+            const prop = propertiesData.find(p => String(p.id) === String(id));
+            if (!prop) return;
+
+            const modal = document.getElementById('modal-property');
+            if (!modal) return;
+
+            document.getElementById('modal-prop-img').src = prop.image;
+            document.getElementById('modal-prop-type').innerText = prop.type.toUpperCase();
+            document.getElementById('modal-prop-title').innerText = prop.title;
+            document.getElementById('modal-prop-location').innerText = prop.location;
+            document.getElementById('modal-prop-price').innerText = prop.formattedPrice;
+            document.getElementById('modal-prop-desc').innerText = prop.description;
+            document.getElementById('modal-prop-beds').innerText = prop.beds;
+            document.getElementById('modal-prop-baths').innerText = prop.baths;
+            document.getElementById('modal-prop-area').innerText = prop.area;
+            document.getElementById('modal-prop-amenity').innerText = prop.amenity;
+
+            const cleanPhone = currentProfile.phone.replace(/\+/g, '').replace(/\s/g, '');
+            const msg = encodeURIComponent(`Hola ${currentProfile.name}, me interesa la propiedad: ${prop.title} (${prop.formattedPrice}) ubicada en ${prop.location}. Quisiera más detalles.`);
+            
+            document.getElementById('modal-prop-wa-btn').href = `https://wa.me/${cleanPhone}?text=${msg}`;
+
+            modal.classList.remove('hidden');
+        }
+
+        function closePropertyModal() {
+            const modal = document.getElementById('modal-property');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function contactPropertyWhatsApp(id) {
+            const prop = propertiesData.find(p => String(p.id) === String(id));
+            if (!prop) return;
+            const cleanPhone = currentProfile.phone.replace(/\+/g, '').replace(/\s/g, '');
+            const msg = encodeURIComponent(`Hola ${currentProfile.name}, me interesa solicitar información sobre: ${prop.title} (${prop.formattedPrice}).`);
+            window.open(`https://wa.me/${cleanPhone}?text=${msg}`, '_blank');
+        }
+
+        function submitConsignForm(e) {
+            e.preventDefault();
+            const name = document.getElementById('sell-name').value;
+            const phone = document.getElementById('sell-phone').value;
+            const type = document.getElementById('sell-type').value;
+            const location = document.getElementById('sell-location').value;
+            const price = document.getElementById('sell-price').value;
+            const details = document.getElementById('sell-details').value;
+
+            const cleanPhone = currentProfile.phone.replace(/\+/g, '').replace(/\s/g, '');
+            const msg = encodeURIComponent(`Hola ${currentProfile.name}, deseo consignar/vender una propiedad.\n\n` +
+                `*Propietario:* ${name}\n` +
+                `*Teléfono:* ${phone}\n` +
+                `*Tipo:* ${type}\n` +
+                `*Ubicación:* ${location}\n` +
+                `*Precio estimado:* $${price} USD\n` +
+                `*Detalles:* ${details}`);
+
+            window.open(`https://wa.me/${cleanPhone}?text=${msg}`, '_blank');
+        }
+
+        function setDeviceFrame(device) {
+            const container = document.getElementById('main-viewport');
+            const btnMob = document.getElementById('view-mobile');
+            const btnTab = document.getElementById('view-tablet');
+            const btnDesk = document.getElementById('view-desktop');
+
+            btnMob.className = "px-2.5 py-1 text-xs rounded-lg text-beige-300 font-bold hover:text-white transition";
+            btnTab.className = "px-2.5 py-1 text-xs rounded-lg text-beige-300 font-bold hover:text-white transition";
+            btnDesk.className = "px-2.5 py-1 text-xs rounded-lg text-beige-300 font-bold hover:text-white transition";
+
+            if (device === 'mobile') {
+                container.style.maxWidth = '375px';
+                btnMob.className = "px-2.5 py-1 text-xs rounded-lg bg-ruby-800 text-white font-bold shadow-md";
+            } else if (device === 'tablet') {
+                container.style.maxWidth = '768px';
+                btnTab.className = "px-2.5 py-1 text-xs rounded-lg bg-ruby-800 text-white font-bold shadow-md";
+            } else {
+                container.style.maxWidth = '100%';
+                btnDesk.className = "px-2.5 py-1 text-xs rounded-lg bg-ruby-800 text-white font-bold shadow-md";
+            }
+        }
+    </script>
+</body>
+</html>
